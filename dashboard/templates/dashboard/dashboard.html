@@ -262,7 +262,7 @@
         </div>
     </div>
     <footer>
-        &copy; {{ now|date:'Y' }} E-commerce Analysis Dashboard &mdash; Crafted by <a class="footer-link" href="https://github.com/" target="_blank" rel="noopener">Your Name</a>
+        &copy; {{ now|date:'Y' }} E-commerce Analysis Dashboard &mdash; Crafted by <a class="footer-link" href="https://github.com/ShivamK91" target="_blank" rel="noopener">Shivam Kumar</a>
     </footer>
     <script>
         {% if has_monthly_sales %}Plotly.newPlot('monthly_sales', JSON.parse('{{ monthly_sales_json|escapejs }}').data, JSON.parse('{{ monthly_sales_json|escapejs }}').layout, {responsive: true});{% endif %}

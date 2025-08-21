@@ -9,7 +9,7 @@ import pandas as pd
 
 def dashboard(request):
     df = analysis.load_data()
-    # Date range filtering
+    # Date range filtering (restore original logic)
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
     if start_date and end_date:
@@ -23,14 +23,6 @@ def dashboard(request):
     selected_category = request.GET.get('category')
     if selected_category and 'Product Category' in df.columns:
         df = df[df['Product Category'] == selected_category]
-    # Month drilldown
-    selected_month = request.GET.get('month')
-    if selected_month:
-        try:
-            month_period = pd.Period(selected_month)
-            df = df[df['Order Date'].dt.to_period('M') == month_period]
-        except Exception:
-            pass
     # 1. Monthly Sales
     monthly_sales_data, highest_month, lowest_month = analysis.monthly_sales(df)
     monthly_sales_chart = go.Figure([go.Bar(y=monthly_sales_data.index.astype(str), x=monthly_sales_data.values, orientation='h')])
@@ -143,7 +135,6 @@ def dashboard(request):
         'start_date': start_date,
         'end_date': end_date,
         'selected_category': selected_category,
-        'selected_month': selected_month,
         'has_monthly_sales': has_monthly_sales,
         'has_sales_by_cat': has_sales_by_cat,
         'has_sales_by_subcat': has_sales_by_subcat,
@@ -153,6 +144,8 @@ def dashboard(request):
         'has_sales_profit_by_seg': has_sales_profit_by_seg,
     }
     context.update({
+        'start_date': start_date,
+        'end_date': end_date,
         'sales_by_region_json': sales_by_region_json,
         'has_sales_by_region': has_sales_by_region,
         'sales_by_province_json': sales_by_province_json,
